@@ -21,12 +21,22 @@ int main (int argc, char * argv[], char ** envp) {
     int offset = 0;
     int number = 0;
     int ascii_value;
+    int digit;
 
 
 /* reads a string of 1's and 0's as ASCII digits */
 /* Exercise the read() system call to read a single byte, at a time from stdin */
     
     int retval = read(0, &ascii_value, 1);
+    
+    while (retval == 1){
+        digit = ascii_value - offset;
+        number = (number << 1) + digit;
+        retval = read(0, &ascii_value, 1);
+    }
+
+    printf("%u\n", number);
+    return 0;
 
 /* validate that the read byte is appropriate for conversion */
 
