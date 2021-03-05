@@ -38,27 +38,35 @@
 
 int main (int argc, char * argv[], char ** envp) {
 
-    int offset = 30;
+    int offset = 48;
     int number = 0;
-    char ascii_value;
-    int retval = read(0, &ascii_value, 1);      /* 1. */
+    byte ascii_value;
+    int retval = read(0, &ascii_value, 1);          /* 1. */
     printf("%i\n",retval);
     printf("ascii_value: %d\n", ascii_value);
     printf("first\n");
     
     while (retval == 1){
-     
-        int digit = (int)ascii_value - offset;
-        printf("digit: %c\t", digit);
-        number = (number << 1) + digit;
-        printf("number: %i\n", number);  
-        retval = read(0, &ascii_value, 1);
-        printf("ascii_value: %d\n", ascii_value);
-        printf("retval: %i\n", retval);
-        printf("loop\n");
-
+        if (retval == 0){ printf("EOF");}           /* 5a. */
+        else {
+            int digit = (int)ascii_value - offset;  /* 3. */
+            printf("digit: %i\t", digit);
+            if (digit != 0 || digit != 1){          /* 2. */
+                if (digit == -38) {
+                    printf("EOL\n");
+                    break;
+                }
+                else{ printf("Not a binary number"); }  /* 5b. */
+            }
+            number = (number << 1) + digit;         /* 4. */
+            printf("number: %i\n", number);  
+            retval = read(0, &ascii_value, 1);      /* 1. */
+            printf("ascii_value: %d\n", ascii_value);
+            printf("retval: %i\n", retval);
+            printf("loop\n");
+        }
     }
     
-    printf("%u\n", number);
-    return 0;
+    printf("%u\n", number);                         /* 6. */
+    return 0;                                       /* 7. */
 }
