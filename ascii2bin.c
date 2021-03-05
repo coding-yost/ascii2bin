@@ -42,28 +42,38 @@ int main (int argc, char * argv[], char ** envp) {
     int number = 0;
     byte ascii_value;
     int retval = read(0, &ascii_value, 1);          /* 1. */
+    /*
     printf("%i\n",retval);
     printf("ascii_value: %d\n", ascii_value);
     printf("first\n");
-    
+    */
     while (retval == 1){
-        if (retval == 0){ printf("EOF");}           /* 5a. */
+        if (retval == 0){ printf("EOF\n"); break; }           /* 5a. */
         else {
             int digit = (int)ascii_value - offset;  /* 3. */
+            /*
             printf("digit: %i\t", digit);
+            */
             if (digit != 0 || digit != 1){          /* 2. */
                 if (digit == -38) {
+                    /*
                     printf("EOL\n");
+                    */
                     break;
                 }
-                else{ printf("Not a binary number"); }  /* 5b. */
+                else if(digit > 1 && digit <= 9){ fprintf(stderr, "Error! Not a binary number\n"); break; }  /* 5b. */
             }
             number = (number << 1) + digit;         /* 4. */
+            /*
             printf("number: %i\n", number);  
+            */
             retval = read(0, &ascii_value, 1);      /* 1. */
+            
+            /*
             printf("ascii_value: %d\n", ascii_value);
             printf("retval: %i\n", retval);
             printf("loop\n");
+            */
         }
     }
     
